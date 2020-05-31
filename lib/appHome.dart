@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'helpers/constants.dart';
 import 'package:flutter/rendering.dart';
-
+import 'apiService.dart';
 
 void home() => runApp(HorizontalScrollList());
 
@@ -45,6 +45,7 @@ class HorizontalScrollListState extends State<HorizontalScrollList> {
 
   @override
   Widget build(BuildContext context) {
+    final TmdbApi ApiRes = TmdbApi();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Horizontal scroll list',
