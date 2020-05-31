@@ -43,6 +43,16 @@ class HorizontalScrollListState extends State<HorizontalScrollList> {
               );
   }
 
+  Widget appBarProperty = Text(
+                      'MovE',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    );
+  Icon searchIcon = Icon(Icons.search, color: Colors.blueAccent[400],);
+  IconButton cancelButton = IconButton(icon: Icon(Icons.cancel, color: Colors.blueAccent[400],), onPressed: null);
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -54,14 +64,63 @@ class HorizontalScrollListState extends State<HorizontalScrollList> {
       home: Scaffold(
         backgroundColor: Colors.black,
          appBar: AppBar(
+           elevation: 20.0,
            leading: IconButton(icon: Icon(Icons.menu, color: Colors.blueAccent[400]), onPressed: (){}),
-           title: Text("Horizontal Scroll View",
-            style: TextStyle(
-              color: Colors.white,
-            ), 
-           ),
+           title: appBarProperty,
            actions: <Widget>[
-             IconButton(icon: Icon(Icons.search, color: Colors.blueAccent[400],), onPressed: (){}),
+             IconButton(
+               icon: searchIcon, 
+               onPressed: (){
+                 setState(() {
+                   this.appBarProperty = TextField(
+                     style: TextStyle(
+                       color: Colors.purpleAccent[100],
+                     ),
+                    decoration: InputDecoration(
+                      labelText: "MovE",
+                      hintText: "search",
+                      hintStyle: TextStyle(
+                        color: Colors.white,
+                      ),
+                      labelStyle: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ), 
+                    ),
+                  );
+                 });
+              //   setState(() {
+              //     if(this.searchIcon.icon == Icons.search) {
+              //       this.appBarProperty = TextField(
+              //         decoration: InputDecoration(
+              //           border: InputBorder.none,
+              //           fillColor: Colors.white,
+              //         ),
+              //         style: TextStyle(
+              //           color: Colors.white
+              //         ),
+              //       );
+              //     }
+              //     else{
+
+              //     }
+              //  });
+             }),
+
+              IconButton(
+                icon: cancelButton,
+                onPressed: () {
+                  setState(() {
+                    this.appBarProperty = Text(
+                      'MovE',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    );
+                  });
+                },
+                )
            ],
          ),
          body: SingleChildScrollView(

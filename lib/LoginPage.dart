@@ -7,6 +7,7 @@ class LoginPage extends StatelessWidget {
 
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+  final bool _alreadyLoggedIn = false;
 
   @override
   Widget build(BuildContext context) {
