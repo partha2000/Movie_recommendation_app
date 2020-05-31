@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'helpers/constants.dart';
 import 'package:flutter/rendering.dart';
+import 'moviePage.dart';
 
 
 // void home() => runApp(HorizontalScrollList());
@@ -9,6 +10,14 @@ class HorizontalScrollListState extends State<HorizontalScrollList> {
 
   final Set<String> _favorites = Set<String>();       // Change String to Json object
 
+  void moviePage(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => MoviePageHome(),
+      )
+    );
+  }
+
   Container MovieList(String imgVal, String title, double rating) {
     final bool alreadySaved = _favorites.contains(imgVal);      //Change imgVal to json object
     return Container(                        //First Card   -- became generic card
@@ -16,29 +25,34 @@ class HorizontalScrollListState extends State<HorizontalScrollList> {
                 // color: appDarkGreyColor,
                 child: Card(                                                  //Card-- change it to link while routing along with image
                   color: appDarkGreyColor,
-                  child: Wrap(
-                    children: <Widget>[
-                      Image.network(imgVal),
-                      ListTile(
-                        title: Text(title, style: TextStyle(color: Colors.blueAccent[400]),),
-                        subtitle: Text('$rating', style: TextStyle(color: Colors.blueAccent[400]),),
-                        trailing: Icon(
-                          alreadySaved ? Icons.favorite : Icons.favorite_border,
-                          color: alreadySaved ? Colors.red : Colors.white,
+                  child: InkWell(
+                    child:Wrap(
+                      children: <Widget>[
+                        Image.network(imgVal),
+                        ListTile(
+                          title: Text(title, style: TextStyle(color: Colors.blueAccent[400]),),
+                          subtitle: Text('$rating', style: TextStyle(color: Colors.blueAccent[400]),),
+                          trailing: IconButton(
+                              icon: Icon(
+                              alreadySaved ? Icons.favorite : Icons.favorite_border,
+                              color: alreadySaved ? Colors.red : Colors.white,
+                            ),
+                            onPressed: (){
+                              setState(() {
+                                if (alreadySaved) {
+                                _favorites.remove(imgVal);
+                              }
+                              else {
+                                _favorites.add(imgVal);
+                              }
+                              });
+                            },
+                          )
                         ),
-                        onTap: (){
-                          setState(() {
-                            if (alreadySaved) {
-                            _favorites.remove(imgVal);
-                          }
-                          else {
-                            _favorites.add(imgVal);
-                          }
-                          });
-                        },
-                      ),
-                    ],
-                  ), 
+                      ],
+                    ),
+                    onTap: () => moviePage(context),  
+                  ),
                 ),
               );
   }
@@ -51,6 +65,8 @@ class HorizontalScrollListState extends State<HorizontalScrollList> {
                     );
   Icon searchIcon = Icon(Icons.search, color: Colors.blueAccent[400],);
   IconButton cancelButton = IconButton(icon: Icon(Icons.cancel, color: Colors.blueAccent[400],), onPressed: null);
+  
+  bool _searchButtonPressed = false;
 
 
   @override
@@ -58,9 +74,7 @@ class HorizontalScrollListState extends State<HorizontalScrollList> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Horizontal scroll list',
-      theme: ThemeData(
-        primaryColor: appDarkGreyColor,
-      ),
+      theme: ThemeData.dark(),
       home: Scaffold(
         backgroundColor: Colors.black,
          appBar: AppBar(
@@ -71,41 +85,28 @@ class HorizontalScrollListState extends State<HorizontalScrollList> {
              IconButton(
                icon: searchIcon, 
                onPressed: (){
+                 _searchButtonPressed = !_searchButtonPressed;
                  setState(() {
-                   this.appBarProperty = TextField(
+                   if (_searchButtonPressed){
+                     this.appBarProperty = TextField(
+                     autofocus: true,
+                    //  obscureText: false,
                      style: TextStyle(
                        color: Colors.purpleAccent[100],
                      ),
                     decoration: InputDecoration(
-                      labelText: "MovE",
+                      // labelText: "MovE",
                       hintText: "search",
                       hintStyle: TextStyle(
                         color: Colors.white,
                       ),
-                      labelStyle: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ), 
                     ),
                   );
+                   }
+                   else{
+                     // Search query params here
+                   }
                  });
-              //   setState(() {
-              //     if(this.searchIcon.icon == Icons.search) {
-              //       this.appBarProperty = TextField(
-              //         decoration: InputDecoration(
-              //           border: InputBorder.none,
-              //           fillColor: Colors.white,
-              //         ),
-              //         style: TextStyle(
-              //           color: Colors.white
-              //         ),
-              //       );
-              //     }
-              //     else{
-
-              //     }
-              //  });
              }),
 
               IconButton(
@@ -211,7 +212,7 @@ class HorizontalScrollListState extends State<HorizontalScrollList> {
                     MovieList("https://images.unsplash.com/photo-1528155124528-06c125d81e89?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60", "title", 4.0),
                     MovieList("https://images.unsplash.com/photo-1542052722982-1c9f552a534b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjF9&auto=format&fit=crop&w=634&q=80", "title", 4.0),                           
                   ],
-                ), 
+                ),
               ),
             ],
           )

@@ -11,7 +11,7 @@ class LoginPage extends StatelessWidget {
   final _passwordController = TextEditingController();
   final bool _alreadyLoggedIn = false;
 
-  void home(BuildContext context) {
+  void apphome(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => HorizontalScrollList(),
@@ -83,12 +83,13 @@ class LoginPage extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24)
         ),
-        onPressed: () => home(context),
+        onPressed: () => apphome(context),
         padding: EdgeInsets.all(12),
         color: Colors.purpleAccent[400],
         child: Text(loginButtonText, style: TextStyle(color: Colors.white)),
       ),
     );
+
 
     return Scaffold(
       backgroundColor: appDarkGreyColor,

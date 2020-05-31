@@ -14,3 +14,4 @@ Image appLogo = Image.network('https://github.com/partha2000/Movie_recommendatio
 
 const bigRadius = 66.0;
 const buttonHeight = 24.0;
+

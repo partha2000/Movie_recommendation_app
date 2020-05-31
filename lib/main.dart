@@ -11,9 +11,7 @@ class MovEApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: appTitle,
-      theme: ThemeData(
-        primaryColor: appDarkGreyColor,
-      ),
+      theme: ThemeData.dark(),
       home: LoginPage(),
     );
   }
