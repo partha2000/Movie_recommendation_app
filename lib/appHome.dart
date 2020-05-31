@@ -1,7 +1,11 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'helpers/constants.dart';
 import 'package:flutter/rendering.dart';
 import 'apiService.dart';
+import 'dart:convert';
+
 
 void home() => runApp(HorizontalScrollList());
 
@@ -9,7 +13,7 @@ class HorizontalScrollListState extends State<HorizontalScrollList> {
 
   final Set<String> _favorites = Set<String>();       // Change String to Json object
 
-  Container MovieList(String imgVal, String title, double rating) {
+  Container MovieList(String imgVal, String title, var rating) {
     final bool alreadySaved = _favorites.contains(imgVal);      //Change imgVal to json object
     return Container(                        //First Card   -- became generic card
                 width: 160.0,
@@ -45,7 +49,9 @@ class HorizontalScrollListState extends State<HorizontalScrollList> {
 
   @override
   Widget build(BuildContext context) {
-    final TmdbApi ApiRes = TmdbApi();
+    var x = TmdbApi();
+    var data = x.topMovies();
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Horizontal scroll list',
@@ -84,18 +90,37 @@ class HorizontalScrollListState extends State<HorizontalScrollList> {
               Container(
                 // margin: EdgeInsets.symmetric(vertical: 20.0),
                 height: 300,
-                child: ListView(
-                  
-                  scrollDirection: Axis.horizontal,
-                  children: <Widget>[
-                    // TODO   
-                    MovieList("https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60", "title", 4.0),
-                    MovieList("https://images.unsplash.com/photo-1484581400079-58a319a15a2a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjIxMTIzfQ&auto=format&fit=crop&w=500&q=60", "title", 4.0),
-                    MovieList("https://images.unsplash.com/photo-1515875294982-4796669a7932?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60", "title", 4.0),
-                    MovieList("https://images.unsplash.com/photo-1528155124528-06c125d81e89?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60", "title", 4.0),
-                    MovieList("https://images.unsplash.com/photo-1542052722982-1c9f552a534b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjF9&auto=format&fit=crop&w=634&q=80", "title", 4.0),                           
-                  ],
-                ), 
+                child: FutureBuilder(
+                  future: data,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      var results = json.decode(snapshot.data)['results'];
+                      var MovieInfo = [];
+                      for(var i = 0; i < results.length; i++ ){
+                          var currMovie = results[i];
+                          var movie = {
+                          'title' : currMovie['title'],
+                          'posterPath' : 'https://image.tmdb.org/t/p/w500/' + currMovie['poster_path'],
+                          'ratings' : currMovie['vote_average'],
+                          'description' : currMovie['overview']
+                          };
+                      MovieInfo.add(movie);
+                      }
+// do map here
+                      return ListView(
+                        scrollDirection: Axis.horizontal,
+                        children:
+                        MovieInfo.map((singleMovie) {
+                          return MovieList('dummy image value', singleMovie['title'],singleMovie['ratings'] );
+                        }).toList() ,
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text("${snapshot.error}");
+                    }
+                    return CircularProgressIndicator();
+                  },
+                )
+
               ),
 
 
