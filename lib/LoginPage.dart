@@ -1,3 +1,5 @@
+// import 'dart:js';
+
 import 'package:flutter/material.dart';
 import 'helpers/constants.dart';
 import 'appHome.dart';
@@ -8,6 +10,14 @@ class LoginPage extends StatelessWidget {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   final bool _alreadyLoggedIn = false;
+
+  void home(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => HorizontalScrollList(),
+      )
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +83,7 @@ class LoginPage extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24)
         ),
-        onPressed: home,
+        onPressed: () => home(context),
         padding: EdgeInsets.all(12),
         color: Colors.purpleAccent[400],
         child: Text(loginButtonText, style: TextStyle(color: Colors.white)),

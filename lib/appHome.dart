@@ -3,7 +3,7 @@ import 'helpers/constants.dart';
 import 'package:flutter/rendering.dart';
 
 
-void home() => runApp(HorizontalScrollList());
+// void home() => runApp(HorizontalScrollList());
 
 class HorizontalScrollListState extends State<HorizontalScrollList> {
 
